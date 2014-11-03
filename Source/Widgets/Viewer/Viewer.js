@@ -22,6 +22,7 @@ define([
         '../HomeButton/HomeButton',
         '../InfoBox/InfoBox',
         '../NavigationHelpButton/NavigationHelpButton',
+				'../ImageCarousel/ImageCarousel',
         '../SceneModePicker/SceneModePicker',
         '../SelectionIndicator/SelectionIndicator',
         '../subscribeAndEvaluate',
@@ -49,6 +50,7 @@ define([
         HomeButton,
         InfoBox,
         NavigationHelpButton,
+				ImageCarousel,
         SceneModePicker,
         SelectionIndicator,
         subscribeAndEvaluate,
@@ -80,6 +82,30 @@ define([
      * @param {Boolean} [options.selectionIndicator=true] If set to false, the SelectionIndicator widget will not be created.
      * @param {Boolean} [options.timeline=true] If set to false, the Timeline widget will not be created.
      * @param {Boolean} [options.navigationHelpButton=true] If set to the false, the navigation help button will not be created.
+		 * @param {Boolean} [eg. options.imageCarousel= [{
+		 		images: [{
+           src: 'images/dialog1.png',
+           alt: 'First image',
+           content: 'First Dialog'
+       }, {
+           src: 'images/dialog2.png',
+           alt: 'Second image',
+           content: 'Second Dialog'
+       }, {
+           src: 'images/dialog3.png',
+           alt: 'Third image',
+           content: 'Third Dialog'
+       }, {
+           src: 'images/dialog4.png',
+           alt: 'Third image',
+           content: 'Fourth Dialog'
+       }, {
+           src: 'images/dialog5.png',
+           alt: 'Third image',
+           content: 'Fifth Dialog'
+       }]	
+		 }]] If not set or set to false, the ImageCarousel widget will not be 
+		 * created.
      * @param {Boolean} [options.navigationInstructionsInitiallyVisible=true] True if the navigation instructions should initially be visible, or false if the should not be shown until the user explicitly clicks the button.
      * @param {Boolean} [options.scene3DOnly=false] When <code>true</code>, each geometry instance will only be rendered in 3D to save GPU memory.
      * @param {ProviderViewModel} [options.selectedImageryProviderViewModel] The view model for the current base imagery layer, if not supplied the first available base layer is used.  This value is only valid if options.baseLayerPicker is set to true.
@@ -113,6 +139,7 @@ define([
      * @see CesiumWidget
      * @see FullscreenButton
      * @see HomeButton
+     * @see ImageCarousel
      * @see SceneModePicker
      * @see Timeline
      * @see viewerDragDropMixin
@@ -308,6 +335,16 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
             }
         }
 
+				// ImageCarousel
+        var imageCarousel;
+        if (!defined(options.imageCarousel) || options.imageCarousel !== false) {
+            imageCarousel = new ImageCarousel({
+                container : toolbar,
+                instructionsInitiallyVisible : false,
+                images: options.imageCarousel.images
+            });
+        }
+
         // SceneModePicker
         // By default, we silently disable the scene mode picker if scene3DOnly is true,
         // but if sceneModePicker is explicitly set to true, throw an error.
@@ -472,6 +509,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         this._clockViewModel = clockViewModel;
         this._toolbar = toolbar;
         this._homeButton = homeButton;
+				this._imageCarousel = imageCarousel;
         this._sceneModePicker = sceneModePicker;
         this._baseLayerPicker = baseLayerPicker;
         this._animation = animation;
@@ -565,6 +603,17 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         homeButton : {
             get : function() {
                 return this._homeButton;
+            }
+        },
+
+        /**
+         * Gets the ImageCarousel.
+         * @memberof Viewer.prototype
+         * @type {ImageCarousel}
+         */
+        imageCarousel : {
+            get : function() {
+                return this._imageCarousel;
             }
         },
 
