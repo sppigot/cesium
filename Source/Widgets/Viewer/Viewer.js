@@ -337,7 +337,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
 
 				// ImageCarousel
         var imageCarousel;
-        if (!defined(options.imageCarousel) || options.imageCarousel !== false) {
+        if (defined(options.imageCarousel) || options.imageCarousel === true) {
             imageCarousel = new ImageCarousel({
                 container : toolbar,
                 instructionsInitiallyVisible : false,
